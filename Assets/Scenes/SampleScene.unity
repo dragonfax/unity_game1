@@ -221,11 +221,6 @@ Prefab:
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 147d826ca4c5a834a9dfe5db390c47f4, type: 2}
   m_IsPrefabAsset: 0
---- !u!4 &313431601 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 400010, guid: 147d826ca4c5a834a9dfe5db390c47f4,
-    type: 2}
-  m_PrefabInternal: {fileID: 213035505}
 --- !u!1 &534669902
 GameObject:
   m_ObjectHideFlags: 0
@@ -297,7 +292,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 534669902}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 6.46, z: -22.71}
+  m_LocalPosition: {x: 0, y: 13.83, z: -22.71}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2093884245}
@@ -413,6 +408,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1063409282}
   - component: {fileID: 1063409283}
+  - component: {fileID: 1063409284}
   m_Layer: 0
   m_Name: Camera Rig
   m_TagString: Untagged
@@ -442,20 +438,28 @@ MonoBehaviour:
   m_GameObject: {fileID: 1063409281}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8d3968294210ba4a9d2bb96dfa74a16, type: 3}
+  m_Script: {fileID: 11500000, guid: 809c0fa6a8e1d46eeb7de45fdbe8489b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Target: {fileID: 313431601}
+  m_Target: {fileID: 0}
   m_AutoTargetPlayer: 1
   m_UpdateType: 0
-  m_MoveSpeed: 3
-  m_TurnSpeed: 1
-  m_RollSpeed: 0.2
-  m_FollowVelocity: 0
-  m_FollowTilt: 1
-  m_SpinTurnLimit: 90
-  m_TargetVelocityLowerLimit: 4
-  m_SmoothTurnTime: 0.2
+  rotationBuffer: 1
+  pivotRotationSpeed: 10
+--- !u!114 &1063409284
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1063409281}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c3b3fef752644486b6100621eba3cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Target: {fileID: 0}
+  m_AutoTargetPlayer: 1
+  m_UpdateType: 0
 --- !u!1001 &1417263365
 Prefab:
   m_ObjectHideFlags: 0
