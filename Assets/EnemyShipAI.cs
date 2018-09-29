@@ -34,8 +34,11 @@ public class EnemyShipAI : MonoBehaviour
         if (dot < 0.5)
         {
             // with 30 degrees in front of us.
-            MachineGunFire machineGun = GetComponent<MachineGunFire>();
-            machineGun.Fire();
+            MachineGunFire[] machineGuns = GetComponentsInChildren<MachineGunFire>();
+            foreach (MachineGunFire mg in machineGuns)
+            {
+                mg.Fire();
+            }
         }
 
         if (Vector3.Distance(m_Player.position, transform.position) > circleDistance)
@@ -43,6 +46,8 @@ public class EnemyShipAI : MonoBehaviour
             // move towards player
             Quaternion playerDirection = Quaternion.LookRotation(heading, Vector3.up);
             transform.rotation = Quaternion.Lerp(transform.rotation, playerDirection, Time.deltaTime);
+            // draw the direction we want to be going.
+            Debug.DrawRay(transform.position, heading);
         }
         else
         {
@@ -54,8 +59,8 @@ public class EnemyShipAI : MonoBehaviour
             Quaternion perpQ = Quaternion.LookRotation(perpV, Vector3.up);
 
             transform.rotation = Quaternion.Lerp(transform.rotation, perpQ, Time.deltaTime);
+            // draw the direction we want to be going.
+            Debug.DrawRay(transform.position, perpV * 10);
         }
-
-
     }
 }

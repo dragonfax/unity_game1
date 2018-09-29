@@ -503,7 +503,7 @@ Prefab:
     - target: {fileID: 114829429022529262, guid: ce9b81a85337f480e9e95421d06b9d01,
         type: 2}
       propertyPath: circleDistance
-      value: 10
+      value: 100
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ce9b81a85337f480e9e95421d06b9d01, type: 2}
