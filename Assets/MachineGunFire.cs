@@ -8,14 +8,20 @@ public class MachineGunFire : MonoBehaviour
 
     public Rigidbody bullet;
     public float bulletSpeed = 10;
+    public bool isPlayer = false;
 
     // Update is called once per frame
     void Update()
     {
         if (CrossPlatformInputManager.GetButtonDown("Fire1"))
         {
-            Rigidbody clone = (Rigidbody)Instantiate(bullet, transform.position, transform.rotation);
-            clone.velocity = transform.forward * bulletSpeed;
+            Fire();
         }
+    }
+
+    public void Fire()
+    {
+        Rigidbody clone = (Rigidbody)Instantiate(bullet, transform.position, transform.rotation);
+        clone.velocity = transform.forward * bulletSpeed;
     }
 }
