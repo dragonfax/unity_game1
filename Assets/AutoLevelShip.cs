@@ -24,18 +24,15 @@ public class AutoLevelShip : MonoBehaviour
         {
             lastRotationTime = Time.time;
             lastLocalRotation = currentLocalRotation;
-            Debug.Log("manual rotated");
         }
         else
         {
-            Debug.Log("not manual rotated");
             // calculate preferred rotation (closes to world UP)
             Vector3 ForwardGlobal = currentGlobalRotation * Vector3.forward;
             Quaternion toRotation = Quaternion.LookRotation(ForwardGlobal, Vector3.up);
 
             if (currentGlobalRotation != toRotation && Time.time - lastRotationTime > idleTimeToRotate)
             {
-                Debug.Log("auto-rotated");
                 transform.rotation = Quaternion.Lerp(currentGlobalRotation, toRotation, Time.deltaTime);
 
                 // update the pivot rotation so we don't mistake it for our own rotation

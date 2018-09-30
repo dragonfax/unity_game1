@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 public class ExactFollowCamera : UnityStandardAssets.Cameras.PivotBasedCameraRig
 {
@@ -11,6 +12,8 @@ public class ExactFollowCamera : UnityStandardAssets.Cameras.PivotBasedCameraRig
 
     // We don't move the camera with the ship if their differing view angle is too large.
     private bool tooFar;
+    public float controlAngle = 30;
+    public float quatEllipsis = 0.01f;
 
     protected override void Start()
     {
@@ -22,10 +25,17 @@ public class ExactFollowCamera : UnityStandardAssets.Cameras.PivotBasedCameraRig
 
     private void UpdateRdiff()
     {
-        tooFar = Quaternion.Angle(m_Target.rotation, m_Pivot.rotation) > 30;
+        tooFar = Quaternion.Angle(m_Target.rotation, m_Pivot.rotation) > controlAngle;
         rDiff = m_Pivot.rotation * Quaternion.Inverse(m_Target.rotation);
+        Assert.IsTrue(Approximately(m_Target.rotation * rDiff, m_Pivot.rotation, quatEllipsis));
         lastPivotLocalRotation = m_Pivot.localRotation;
     }
+
+    public static bool Approximately(Quaternion val, Quaternion about, float range)
+    {
+        return Quaternion.Dot(val, about) > 1f - range;
+    }
+
 
     private void MovePivotRotation()
     {
@@ -40,8 +50,8 @@ public class ExactFollowCamera : UnityStandardAssets.Cameras.PivotBasedCameraRig
     protected override void FollowTarget(float deltaTime)
     {
 
-        bool pivotLocalRotated = m_Pivot.localRotation != lastPivotLocalRotation;
-        bool playerRotated = m_Target.rotation != lastPlayerGlobalRotation;
+        bool pivotLocalRotated = !Approximately(m_Pivot.localRotation, lastPivotLocalRotation, quatEllipsis);
+        bool playerRotated = !Approximately(m_Target.rotation, lastPlayerGlobalRotation, quatEllipsis);
 
         if (pivotLocalRotated)
         {
