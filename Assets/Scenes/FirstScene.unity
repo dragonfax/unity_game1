@@ -445,7 +445,8 @@ MonoBehaviour:
   m_AutoTargetPlayer: 1
   m_UpdateType: 0
   rotationBuffer: 1
-  pivotRotationSpeed: 10
+  deadZone: 0.3
+  rotationSpeed: 1
 --- !u!114 &1063409284
 MonoBehaviour:
   m_ObjectHideFlags: 0
