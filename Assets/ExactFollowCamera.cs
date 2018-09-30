@@ -26,8 +26,8 @@ public class ExactFollowCamera : UnityStandardAssets.Cameras.PivotBasedCameraRig
     private void UpdateRdiff()
     {
         tooFar = Quaternion.Angle(m_Target.rotation, m_Pivot.rotation) > controlAngle;
-        rDiff = m_Pivot.rotation * Quaternion.Inverse(m_Target.rotation);
-        Assert.IsTrue(Approximately(m_Target.rotation * rDiff, m_Pivot.rotation, quatEllipsis));
+        rDiff = (m_Pivot.rotation * Quaternion.Inverse(m_Target.rotation).normalized).normalized;
+        Assert.IsTrue(Approximately((m_Target.rotation * rDiff).normalized, m_Pivot.rotation, quatEllipsis));
         lastPivotLocalRotation = m_Pivot.localRotation;
     }
 
@@ -42,7 +42,7 @@ public class ExactFollowCamera : UnityStandardAssets.Cameras.PivotBasedCameraRig
         // Debug.Log(Time.frameCount + ": updating pivot");
         if (!tooFar)
         {
-            m_Pivot.rotation = m_Target.rotation * rDiff;
+            m_Pivot.rotation = (m_Target.rotation * rDiff).normalized;
             lastPivotLocalRotation = m_Pivot.localRotation;
         }
     }
@@ -50,8 +50,10 @@ public class ExactFollowCamera : UnityStandardAssets.Cameras.PivotBasedCameraRig
     protected override void FollowTarget(float deltaTime)
     {
 
-        bool pivotLocalRotated = !Approximately(m_Pivot.localRotation, lastPivotLocalRotation, quatEllipsis);
-        bool playerRotated = !Approximately(m_Target.rotation, lastPlayerGlobalRotation, quatEllipsis);
+        bool pivotLocalRotated = m_Pivot.localRotation != lastPivotLocalRotation;
+        bool playerRotated = m_Target.rotation != lastPlayerGlobalRotation;
+        // bool pivotLocalRotated = !Approximately(m_Pivot.localRotation, lastPivotLocalRotation, quatEllipsis);
+        // bool playerRotated = !Approximately(m_Target.rotation, lastPlayerGlobalRotation, quatEllipsis);
 
         if (pivotLocalRotated)
         {
