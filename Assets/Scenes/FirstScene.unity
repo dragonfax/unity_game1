@@ -409,6 +409,7 @@ GameObject:
   - component: {fileID: 1063409282}
   - component: {fileID: 1063409283}
   - component: {fileID: 1063409284}
+  - component: {fileID: 1063409285}
   m_Layer: 0
   m_Name: Camera Rig
   m_TagString: Untagged
@@ -445,8 +446,7 @@ MonoBehaviour:
   m_AutoTargetPlayer: 1
   m_UpdateType: 0
   rotationBuffer: 1
-  deadZone: 0.3
-  rotationSpeed: 1
+  pivotRotationSpeed: 10
 --- !u!114 &1063409284
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -462,6 +462,20 @@ MonoBehaviour:
   m_AutoTargetPlayer: 1
   m_UpdateType: 0
   idleTimeToRotate: 2
+--- !u!114 &1063409285
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1063409281}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 451c1c609d760426fa7f02b21e415ad2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Target: {fileID: 0}
+  m_AutoTargetPlayer: 1
+  m_UpdateType: 0
 --- !u!1001 &1315021046
 Prefab:
   m_ObjectHideFlags: 0
