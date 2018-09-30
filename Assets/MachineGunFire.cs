@@ -23,5 +23,6 @@ public class MachineGunFire : MonoBehaviour
     {
         Rigidbody clone = (Rigidbody)Instantiate(bullet, transform.position, transform.rotation);
         clone.velocity = transform.forward * bulletSpeed;
+        Destroy(clone, 5);
     }
 }
