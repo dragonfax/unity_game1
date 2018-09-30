@@ -8,33 +8,35 @@ public class AutoLevelShip : MonoBehaviour
     private Quaternion lastLocalRotation;
     private float lastRotationTime;
     public float idleTimeToRotate = 2;
+    private float closeAngle = 5;
 
-    void Update(float deltaTime)
+    bool QuaternionsClose(Quaternion a, Quaternion b)
     {
-        /* wait until pivot hasn't changed in a second, and then lerp towards global up
-		 *
-		 * We verify change against the local rotation
-		 * but when we actually rotate, we have to use global rotations.
-		 * we're rotating to match the global UP vector.
-		 */
+        return a == b || Quaternion.Angle(a, b) < closeAngle;
+    }
 
+    void Update()
+    {
         Quaternion currentLocalRotation = transform.localRotation;
         Quaternion currentGlobalRotation = transform.rotation;
 
-        if (lastLocalRotation != currentLocalRotation)
+        if (!QuaternionsClose(lastLocalRotation, currentLocalRotation))
         {
             lastRotationTime = Time.time;
             lastLocalRotation = currentLocalRotation;
+            Debug.Log("manual rotated");
         }
         else
         {
+            Debug.Log("not manual rotated");
             // calculate preferred rotation (closes to world UP)
             Vector3 ForwardGlobal = currentGlobalRotation * Vector3.forward;
             Quaternion toRotation = Quaternion.LookRotation(ForwardGlobal, Vector3.up);
 
             if (currentGlobalRotation != toRotation && Time.time - lastRotationTime > idleTimeToRotate)
             {
-                transform.rotation = Quaternion.Lerp(currentGlobalRotation, toRotation, deltaTime);
+                Debug.Log("auto-rotated");
+                transform.rotation = Quaternion.Lerp(currentGlobalRotation, toRotation, Time.deltaTime);
 
                 // update the pivot rotation so we don't mistake it for our own rotation
                 lastLocalRotation = transform.localRotation;
