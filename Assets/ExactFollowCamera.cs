@@ -8,6 +8,8 @@ public class ExactFollowCamera : UnityStandardAssets.Cameras.PivotBasedCameraRig
     private Quaternion rDiff;
     private Quaternion lastPivotLocalRotation;
     private Quaternion lastPlayerGlobalRotation;
+
+    // We don't move the camera with the ship if their differing view angle is too large.
     private bool tooFar;
 
     protected override void Start()
@@ -20,17 +22,8 @@ public class ExactFollowCamera : UnityStandardAssets.Cameras.PivotBasedCameraRig
 
     private void UpdateRdiff()
     {
-        if (Quaternion.Angle(m_Target.rotation, m_Pivot.rotation) > 30)
-        {
-            // rotating too far
-            // Debug.Log("rotated too far");
-            tooFar = true;
-        }
-        else
-        {
-            tooFar = false;
-            rDiff = m_Pivot.rotation * Quaternion.Inverse(m_Target.rotation);
-        }
+        tooFar = Quaternion.Angle(m_Target.rotation, m_Pivot.rotation) > 30;
+        rDiff = m_Pivot.rotation * Quaternion.Inverse(m_Target.rotation);
         lastPivotLocalRotation = m_Pivot.localRotation;
     }
 
@@ -56,14 +49,19 @@ public class ExactFollowCamera : UnityStandardAssets.Cameras.PivotBasedCameraRig
 
             UpdateRdiff();
         }
+
         if (playerRotated)
         {
             // player is moving the ship
 
-            // apply rDiff to pivot
             if (!pivotLocalRotated)
             {
+                // apply rDiff to pivot
                 MovePivotRotation();
+            }
+            else
+            {
+                UpdateRdiff();
             }
 
             lastPlayerGlobalRotation = m_Target.rotation;
