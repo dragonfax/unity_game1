@@ -6,7 +6,7 @@ using UnityEngine.Assertions;
 public class ExactFollowCamera : UnityStandardAssets.Cameras.PivotBasedCameraRig
 {
 
-    private Quaternion rDiff;
+    private Vector3 rDiff;
     private Quaternion lastPivotLocalRotation;
     private Quaternion lastPlayerGlobalRotation;
 
@@ -25,9 +25,8 @@ public class ExactFollowCamera : UnityStandardAssets.Cameras.PivotBasedCameraRig
 
     private void UpdateRdiff()
     {
-        tooFar = Quaternion.Angle(m_Target.rotation, m_Pivot.rotation) > controlAngle;
-        rDiff = (m_Pivot.rotation * Quaternion.Inverse(m_Target.rotation).normalized).normalized;
-        Assert.IsTrue(Approximately((m_Target.rotation * rDiff).normalized, m_Pivot.rotation, quatEllipsis));
+        tooFar = HeadingAngle(m_Target.rotation, m_Pivot.rotation) > controlAngle;
+        rDiff = Heading(m_Pivot.rotation) - Heading(m_Target.rotation);
         lastPivotLocalRotation = m_Pivot.localRotation;
     }
 
@@ -36,13 +35,24 @@ public class ExactFollowCamera : UnityStandardAssets.Cameras.PivotBasedCameraRig
         return Quaternion.Dot(val, about) > 1f - range;
     }
 
+    private static float HeadingAngle(Quaternion a, Quaternion b)
+    {
+        return Vector3.Angle(a * Vector3.forward, b * Vector3.forward);
+    }
+
+    private static Vector3 Heading(Quaternion q)
+    {
+        return q * Vector3.forward;
+    }
 
     private void MovePivotRotation()
     {
         // Debug.Log(Time.frameCount + ": updating pivot");
         if (!tooFar)
         {
-            m_Pivot.rotation = (m_Target.rotation * rDiff).normalized;
+            Vector3 heading = Heading(m_Target.rotation) + rDiff;
+            Vector3 upwards = m_Pivot.rotation * Vector3.up;
+            m_Pivot.rotation = Quaternion.LookRotation(heading, upwards);
             lastPivotLocalRotation = m_Pivot.localRotation;
         }
     }
